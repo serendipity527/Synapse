@@ -1,0 +1,61 @@
+name: conditional_flow
+nodes:
+  - id: input_parser
+    type: InputParseNode
+    inputs:
+      raw: flow.request
+    outputs:
+      - sourceKey: intent
+        targetScope: flow
+        targetKey: next_action
+      - sourceKey: data
+        targetScope: flow
+        targetKey: parsed_data
+
+  - id: tool_executor
+    type: ToolExecutorNode
+    inputs:
+      data: flow.parsed_data
+    outputs:
+      - sourceKey: result
+        targetScope: flow
+        targetKey: tool_result
+
+  - id: response_generator
+    type: ResponseGeneratorNode
+    inputs:
+      data: flow.parsed_data
+    outputs:
+      - sourceKey: response
+        targetScope: flow
+        targetKey: final_response
+
+  - id: emergency_handler
+    type: EmergencyHandlerNode
+    inputs:
+      data: flow.parsed_data
+    outputs:
+      - sourceKey: alert
+        targetScope: flow
+        targetKey: emergency_alert
+
+edges:
+  # 入口
+  - source: __start__
+    target: input_parser
+
+  # 条件边：根据 flow.next_action 路由
+  - source: input_parser
+    condition: flow.next_action
+    mappings:
+      use_tool: tool_executor
+      chat: response_generator
+      emergency: emergency_handler
+
+  # 各分支的终点
+  - source: tool_executor
+    target: __end__
+  - source: response_generator
+    target: __end__
+  - source: emergency_handler
+    target: __end__

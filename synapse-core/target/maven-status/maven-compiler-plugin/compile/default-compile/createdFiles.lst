@@ -1,0 +1,3 @@
+com\synapse\core\runtime\SynapseEngine.class
+com\synapse\core\graph\Graph.class
+com\synapse\core\node\Node.class

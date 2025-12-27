@@ -1,0 +1,40 @@
+name: sample_flow
+
+nodes:
+  - id: input_node
+    type: InputParseNode
+    inputs:
+      rawInput: flow.request
+    outputs:
+      - sourceKey: parsedData
+        targetScope: flow
+        targetKey: userData
+
+  - id: process_node
+    type: ProcessNode
+    inputs:
+      data: flow.userData
+      config: global.processConfig
+    outputs:
+      - sourceKey: result
+        targetScope: node
+        targetKey: processResult
+
+  - id: output_node
+    type: OutputNode
+    inputs:
+      processedData: nodes.process_node.processResult
+    outputs:
+      - sourceKey: response
+        targetScope: flow
+        targetKey: finalResponse
+
+edges:
+  - source: __start__
+    target: input_node
+  - source: input_node
+    target: process_node
+  - source: process_node
+    target: output_node
+  - source: output_node
+    target: __end__

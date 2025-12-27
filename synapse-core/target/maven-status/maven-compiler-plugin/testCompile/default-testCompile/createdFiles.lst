@@ -1,0 +1,8 @@
+com\synapse\core\SynapseEngineIntegrationTest.class
+com\synapse\core\runtime\NodeRunnerTest.class
+com\synapse\core\runtime\ConditionEvaluatorTest.class
+com\synapse\core\state\DefaultScopeContextTest.class
+com\synapse\core\StreamingExecutionTest$MockLlmStreamingNode.class
+com\synapse\core\runtime\AdvancedConditionTest.class
+com\synapse\core\StreamingExecutionTest.class
+com\synapse\core\ConditionalEdgeIntegrationTest.class
